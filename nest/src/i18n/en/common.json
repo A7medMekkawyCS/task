@@ -1,0 +1,16 @@
+{
+  "SIGNUP_SUCCESS": "Account created successfully",
+  "LOGIN_SUCCESS": "Login successful",
+  "PROFILE_SUCCESS": "Profile retrieved successfully",
+  "HEALTH_OK": "Service is healthy",
+  "EMAIL_EXISTS": "Email already registered",
+  "INVALID_CREDENTIALS": "Invalid email or password",
+  "UNAUTHORIZED": "Unauthorized",
+  "VALIDATION_FAILED": "Validation failed",
+  "INVALID_SECRET_KEY": "Invalid or missing secret key",
+  "EMAIL_REQUIRED": "Email is required",
+  "EMAIL_INVALID": "Email must be a valid email",
+  "PASSWORD_REQUIRED": "Password is required",
+  "PASSWORD_STRING": "Password must be a string",
+  "PASSWORD_MIN": "Password must be at least 6 characters"
+}

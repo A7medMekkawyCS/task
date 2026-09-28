@@ -1,0 +1,16 @@
+{
+  "common.exception": "Something went wrong",
+  "common.unauthorized": "Unauthorized",
+  "auth.emailExists": "Email already registered",
+  "auth.invalidCredentials": "Invalid email or password",
+  "auth.accountStop": "Account is blocked",
+  "auth.signupSuccess": "Account created successfully",
+  "auth.loginSuccess": "Login successful",
+  "auth.profile": "Profile retrieved successfully",
+  "validation.emailRequired": "Email is required",
+  "validation.emailInvalid": "Email must be a valid email",
+  "validation.passwordRequired": "Password is required",
+  "validation.passwordString": "Password must be a string",
+  "validation.passwordMin": "Password must be at least 6 characters",
+  "auth.healthOk": "Service is healthy"
+}

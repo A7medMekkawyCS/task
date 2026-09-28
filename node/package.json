@@ -1,0 +1,28 @@
+{
+  "name": "node-auth",
+  "version": "1.0.0",
+  "description": "Express + MongoDB authentication (OOP)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "start:dev": "nodemon app.js"
+  },
+  "_moduleAliases": {
+    "@root": "."
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.3.4",
+    "mongoose": "^8.9.5",
+    "multer": "^2.4.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

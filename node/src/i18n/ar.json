@@ -1,0 +1,16 @@
+{
+  "common.exception": "حدث خطأ ما",
+  "common.unauthorized": "غير مصرح",
+  "auth.emailExists": "البريد الإلكتروني مسجل مسبقاً",
+  "auth.invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+  "auth.accountStop": "الحساب موقوف",
+  "auth.signupSuccess": "تم إنشاء الحساب بنجاح",
+  "auth.loginSuccess": "تم تسجيل الدخول بنجاح",
+  "auth.profile": "تم جلب بيانات الملف الشخصي بنجاح",
+  "validation.emailRequired": "البريد الإلكتروني مطلوب",
+  "validation.emailInvalid": "البريد الإلكتروني غير صالح",
+  "validation.passwordRequired": "كلمة المرور مطلوبة",
+  "validation.passwordString": "كلمة المرور يجب أن تكون نصاً",
+  "validation.passwordMin": "كلمة المرور يجب ألا تقل عن 6 أحرف",
+  "auth.healthOk": "الخدمة تعمل بشكل طبيعي"
+}

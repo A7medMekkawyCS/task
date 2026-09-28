@@ -1,0 +1,16 @@
+{
+  "SIGNUP_SUCCESS": "تم إنشاء الحساب بنجاح",
+  "LOGIN_SUCCESS": "تم تسجيل الدخول بنجاح",
+  "PROFILE_SUCCESS": "تم جلب بيانات الملف الشخصي بنجاح",
+  "HEALTH_OK": "الخدمة تعمل بشكل طبيعي",
+  "EMAIL_EXISTS": "البريد الإلكتروني مسجل مسبقاً",
+  "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+  "UNAUTHORIZED": "غير مصرح",
+  "VALIDATION_FAILED": "فشل التحقق من البيانات",
+  "INVALID_SECRET_KEY": "مفتاح السر غير صحيح أو مفقود",
+  "EMAIL_REQUIRED": "البريد الإلكتروني مطلوب",
+  "EMAIL_INVALID": "البريد الإلكتروني غير صالح",
+  "PASSWORD_REQUIRED": "كلمة المرور مطلوبة",
+  "PASSWORD_STRING": "كلمة المرور يجب أن تكون نصاً",
+  "PASSWORD_MIN": "كلمة المرور يجب ألا تقل عن 6 أحرف"
+}
