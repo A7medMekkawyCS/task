@@ -1,7 +1,7 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { I18nContext } from 'nestjs-i18n';
@@ -10,7 +10,7 @@ import { UserPublic } from '../users/entities/user-public.entity';
 import { UserRepository } from '../users/repositories/user.repository';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
-import { JwtPayload } from './entities/auth-user.entity';
+import { AuthUser, JwtPayload } from './entities/auth-user.entity';
 import { IAuthService } from './interfaces/auth-service.interface';
 
 @Injectable()
@@ -44,7 +44,7 @@ export class AuthService implements IAuthService {
       'Invalid email or password';
 
     if (!user) {
-      throw new UnauthorizedException(invalidMessage);
+      throw new BadRequestException(invalidMessage);
     }
 
     const passwordMatches = await this.passwordService.compare(
@@ -53,11 +53,17 @@ export class AuthService implements IAuthService {
     );
 
     if (!passwordMatches) {
-      throw new UnauthorizedException(invalidMessage);
+      throw new BadRequestException(invalidMessage);
     }
 
     const token = await this.createToken(user._id.toString(), user.email);
     return UserPublic.fromDocument(user, token);
+  }
+
+  /** Same response data shape as signup/login: id + email + token. */
+  async profile(user: AuthUser): Promise<UserPublic> {
+    const token = await this.createToken(user.id, user.email);
+    return new UserPublic(user.id, user.email, token);
   }
 
   private createToken(userId: string, email: string): Promise<string> {

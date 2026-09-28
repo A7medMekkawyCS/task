@@ -1,8 +1,7 @@
 /**
  * Same response shape as Nest:
  * success → { key, status, message, data }
- * 400     → { key: "fail", status, message }
- * other errors → { key: "error", status, message }
+ * 400 → fail | 401 → unauthorized | other → error
  */
 class ApiResponse {
   constructor(key, status, message, data) {
@@ -20,7 +19,15 @@ class ApiResponse {
   }
 
   static error(status, message) {
-    const key = Number(status) === 400 ? 'fail' : 'error';
+    const code = Number(status);
+    let key = 'error';
+
+    if (code === 400) {
+      key = 'fail';
+    } else if (code === 401) {
+      key = 'unauthorized';
+    }
+
     return new ApiResponse(key, status, message);
   }
 }

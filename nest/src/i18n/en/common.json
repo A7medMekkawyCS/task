@@ -12,5 +12,7 @@
   "EMAIL_INVALID": "Email must be a valid email",
   "PASSWORD_REQUIRED": "Password is required",
   "PASSWORD_STRING": "Password must be a string",
-  "PASSWORD_MIN": "Password must be at least 6 characters"
+  "PASSWORD_MIN": "Password must be at least 6 characters",
+  "TOKEN_REQUIRED": "Token is required",
+  "TOKEN_INVALID": "Invalid or expired token"
 }

@@ -46,10 +46,11 @@ export class AuthController {
   }
 
   @Get('profile')
-  getProfile(
+  async getProfile(
     @Req() req: { user: AuthUser },
     @I18n() i18n: I18nContext,
-  ): MessageResult {
-    return new MessageResult(i18n.t('common.PROFILE_SUCCESS'), req.user);
+  ): Promise<MessageResult> {
+    const data = await this.authService.profile(req.user);
+    return new MessageResult(i18n.t('common.PROFILE_SUCCESS'), data);
   }
 }

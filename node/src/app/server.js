@@ -5,12 +5,14 @@ const PassportConfig = require('../config/passport.config');
 const AuthRoutes = require('../routes/auth.routes');
 const HealthRoutes = require('../routes/health.routes');
 const ErrorHandler = require('../utils/error-handler');
+const SecretKeyMiddleware = require('../middlewares/secret-key.middleware');
 
 class App {
   constructor() {
     this.app = express();
     this.database = new Database();
     this.errorHandler = new ErrorHandler();
+    this.secretKeyMiddleware = new SecretKeyMiddleware();
   }
 
   async init() {
@@ -27,6 +29,7 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(require('multer')().none());
+    this.app.use(this.secretKeyMiddleware.handle.bind(this.secretKeyMiddleware));
     this.app.use(passport.initialize());
   }
 

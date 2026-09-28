@@ -1,6 +1,11 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import { IS_PUBLIC_KEY } from './decorators/public.decorator';
 
 @Injectable()
@@ -15,11 +20,30 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       context.getClass(),
     ]);
 
-    // Public routes skip JWT authentication entirely.
     if (isPublic) {
       return true;
     }
 
     return super.canActivate(context);
+  }
+
+  handleRequest<TUser>(
+    err: Error | null,
+    user: TUser,
+    _info: unknown,
+    context: ExecutionContext,
+  ): TUser {
+    if (err || !user) {
+      const request = context.switchToHttp().getRequest<Request>();
+      const authHeader = request.headers.authorization;
+
+      if (!authHeader) {
+        throw new UnauthorizedException('TOKEN_REQUIRED');
+      }
+
+      throw new UnauthorizedException('TOKEN_INVALID');
+    }
+
+    return user;
   }
 }

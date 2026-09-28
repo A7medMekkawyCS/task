@@ -15,11 +15,11 @@ class PassportConfig {
       ignoreExpiration: false,
     };
 
-    passport.use(
+      passport.use(
       new JwtStrategy(options, (payload, done) => {
-        // No MongoDB lookup — payload becomes req.user.
+        // Same public shape as Nest AuthUser (id + email).
         return done(null, {
-          userId: payload.sub,
+          id: payload.sub,
           email: payload.email,
         });
       }),

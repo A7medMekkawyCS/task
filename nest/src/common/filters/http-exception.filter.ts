@@ -19,10 +19,9 @@ export class I18nHttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<{ headers?: Record<string, string> }>();
-    const lang =
-      I18nContext.current()?.lang ||
-      request.headers?.['lang'] ||
-      'en';
+    const lang = this.normalizeLang(
+      I18nContext.current()?.lang || request.headers?.['lang'] || 'en',
+    );
 
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = 'Internal server error';
@@ -32,7 +31,7 @@ export class I18nHttpExceptionFilter implements ExceptionFilter {
       const exceptionResponse = exception.getResponse();
 
       if (typeof exceptionResponse === 'string') {
-        message = exceptionResponse;
+        message = this.translateMessage(exceptionResponse, lang);
       } else if (typeof exceptionResponse === 'object' && exceptionResponse) {
         const body = exceptionResponse as {
           message?: string | string[];
@@ -40,47 +39,68 @@ export class I18nHttpExceptionFilter implements ExceptionFilter {
         };
 
         if (Array.isArray(body.message)) {
-          // Translate each validation message key, e.g. EMAIL_REQUIRED
           message = body.message
-            .map((msg) => this.translateMessage(msg, lang))
+            .map((msg) => this.translateMessage(String(msg), lang))
             .join(', ');
         } else if (typeof body.message === 'string') {
           message = this.translateMessage(body.message, lang);
         } else if (body.error) {
-          message = body.error;
+          message = this.translateMessage(body.error, lang);
         }
       }
 
       if (
         statusCode === HttpStatus.UNAUTHORIZED &&
-        message === 'Unauthorized'
+        (message === 'Unauthorized' || message === 'unauthorized')
       ) {
-        message = this.i18n.translate('common.UNAUTHORIZED', {
-          lang,
-        }) as string;
+        message = this.translateMessage('TOKEN_REQUIRED', lang);
       }
     }
 
     response.status(statusCode).json(ApiResponse.error(statusCode, message));
   }
 
+  private normalizeLang(lang: string): string {
+    return String(lang || 'en')
+      .toLowerCase()
+      .split(/[-_,;]/)[0]
+      .trim() || 'en';
+  }
+
   private translateMessage(message: string, lang: string): string {
-    const key = message.startsWith('common.')
-      ? message
-      : `common.${message}`;
+    const shortKey = message.replace(/^common\./, '');
 
-    const translated = this.i18n.translate(key, { lang }) as string;
-
-    // If key is missing, nestjs-i18n may return the key itself
-    if (!translated || translated === key || translated === message) {
-      const fallback = this.i18n.translate(`common.${message}`, {
-        lang,
-      }) as string;
-      return fallback && fallback !== `common.${message}`
-        ? fallback
-        : message;
+    // Plain text (not an i18n key) — return as-is
+    if (!/^[A-Z][A-Z0-9_]*$/.test(shortKey)) {
+      return message;
     }
 
-    return translated;
+    const fullKey = `common.${shortKey}`;
+    const translated = this.i18n.t(fullKey, { lang });
+
+    if (
+      typeof translated === 'string' &&
+      translated.length > 0 &&
+      translated !== fullKey &&
+      translated !== shortKey
+    ) {
+      return translated;
+    }
+
+    // Fallback if loader did not resolve the key
+    const fallbacks: Record<string, Record<string, string>> = {
+      en: {
+        TOKEN_REQUIRED: 'Token is required',
+        TOKEN_INVALID: 'Invalid or expired token',
+        UNAUTHORIZED: 'Unauthorized',
+      },
+      ar: {
+        TOKEN_REQUIRED: 'التوكن مطلوب',
+        TOKEN_INVALID: 'التوكن غير صالح أو منتهي',
+        UNAUTHORIZED: 'غير مصرح',
+      },
+    };
+
+    return fallbacks[lang]?.[shortKey] || fallbacks.en[shortKey] || message;
   }
 }

@@ -15,22 +15,11 @@ class AuthRoutes {
   }
 
   register() {
-    this.router.post(
-      '/signup',
-      AuthValidation.signup(),
-      this.authController.signup,
-    );
+    this.router.post('/signup',AuthValidation.signup(),this.authController.signup);
 
-    this.router.post(
-      '/login',
-      AuthValidation.login(),
-      this.authController.login,
-    );
+    this.router.post('/login',AuthValidation.login(),this.authController.login);
 
-    this.router.get(
-      '/profile',
-      this.jwtAuthMiddleware.handle.bind(this.jwtAuthMiddleware),
-      this.authController.profile,
+    this.router.get('/profile',this.jwtAuthMiddleware.handle.bind(this.jwtAuthMiddleware),this.authController.profile,
     );
   }
 

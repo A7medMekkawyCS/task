@@ -10,10 +10,11 @@ export class JwtPayload {
 
 /**
  * Authenticated user attached to request.user after JwtStrategy.validate().
+ * Profile uses same field names as UserPublic (id + email).
  */
 export class AuthUser {
   constructor(
-    public readonly userId: string,
+    public readonly id: string,
     public readonly email: string,
   ) {}
 

@@ -45,7 +45,7 @@ class AuthService {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError('auth.invalidCredentials', StatusCodes.UNAUTHORIZED);
+      throw new AppError('auth.invalidCredentials', StatusCodes.BAD_REQUEST);
     }
 
     const errorChecks = {
@@ -61,7 +61,7 @@ class AuthService {
         const status =
           errorKey === 'accountStop'
             ? StatusCodes.FORBIDDEN
-            : StatusCodes.UNAUTHORIZED;
+            : StatusCodes.BAD_REQUEST;
         throw new AppError(`auth.${errorKey}`, status);
       }
     }
@@ -78,15 +78,14 @@ class AuthService {
     );
   }
 
-  /** Match Nest profile: userId + email (from token, no DB). */
+  /** Same response data shape as signup/login: id + email + token. */
   profile(authUser, lang) {
+    const token = this.tokenService.createToken(authUser.id, authUser.email);
+
     return ApiResponse.success(
       StatusCodes.OK,
       i18n.t('auth.profile', lang),
-      {
-        userId: authUser.userId,
-        email: authUser.email,
-      },
+      new UserPublic(authUser.id, authUser.email, token),
     );
   }
 }

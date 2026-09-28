@@ -1,6 +1,5 @@
 {
   "common.exception": "Something went wrong",
-  "common.unauthorized": "Unauthorized",
   "auth.emailExists": "Email already registered",
   "auth.invalidCredentials": "Invalid email or password",
   "auth.accountStop": "Account is blocked",
@@ -12,5 +11,8 @@
   "validation.passwordRequired": "Password is required",
   "validation.passwordString": "Password must be a string",
   "validation.passwordMin": "Password must be at least 6 characters",
-  "auth.healthOk": "Service is healthy"
+  "auth.healthOk": "Service is healthy",
+  "common.tokenRequired": "Token is required",
+  "common.tokenInvalid": "Invalid or expired token",
+  "common.invalidSecretKey": "Invalid or missing secret key"
 }

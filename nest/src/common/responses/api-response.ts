@@ -1,16 +1,16 @@
 /**
  * Standard API response object.
- * `data` is included only on success responses.
- * 400 → key: "fail", other errors → key: "error"
+ * `data` only on success.
+ * 400 → fail | 401 → unauthorized | other errors → error
  */
 export class ApiResponse<T = unknown> {
-  readonly key: 'success' | 'error' | 'fail';
+  readonly key: 'success' | 'error' | 'fail' | 'unauthorized';
   readonly status: string;
   readonly message: string;
   readonly data?: T;
 
   private constructor(
-    key: 'success' | 'error' | 'fail',
+    key: 'success' | 'error' | 'fail' | 'unauthorized',
     status: string | number,
     message: string,
     data?: T,
@@ -33,7 +33,15 @@ export class ApiResponse<T = unknown> {
   }
 
   static error(status: string | number, message: string): ApiResponse {
-    const key = Number(status) === 400 ? 'fail' : 'error';
+    const code = Number(status);
+    let key: 'error' | 'fail' | 'unauthorized' = 'error';
+
+    if (code === 400) {
+      key = 'fail';
+    } else if (code === 401) {
+      key = 'unauthorized';
+    }
+
     return new ApiResponse(key, status, message);
   }
 }
